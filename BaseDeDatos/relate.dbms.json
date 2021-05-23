@@ -1,0 +1,35 @@
+{
+  "name": "SpotyZeer 4d5f6d29",
+  "description": "",
+  "tags": [
+    "neo4j-desktop-dbms-database-4d5f6d29-bc35-4783-8c66-d7c5ce854166"
+  ],
+  "id": "1376a63c-ddc4-4148-9062-27fc80af9bfd",
+  "metadata": {
+    "neo4jDesktopDbmsDatabases": [
+      {
+        "name": "neo4j",
+        "role": "standalone",
+        "requestedStatus": "online",
+        "currentStatus": "online",
+        "error": "",
+        "default": true,
+        "statistics": {
+          "nodes": 149,
+          "relationships": 241,
+          "labels": 4,
+          "relationshipTypes": 4,
+          "propertyKeys": 1
+        }
+      },
+      {
+        "name": "system",
+        "role": "standalone",
+        "requestedStatus": "online",
+        "currentStatus": "online",
+        "error": "",
+        "default": false
+      }
+    ]
+  }
+}
