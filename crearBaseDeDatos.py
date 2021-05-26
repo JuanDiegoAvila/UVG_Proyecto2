@@ -1,7 +1,7 @@
 from neo4j import GraphDatabase as GD
 import pandas as pd
 
-baseDeDatos = GD.driver(uri="bolt://localhost:7687", auth=("neo4j", "jamon123"))
+baseDeDatos = GD.driver(uri="bolt://localhost:####", auth=("neo4j", "jamon123"))
 sesion = baseDeDatos.session()  # se establece la coneccion con la base de datos.
 
 
