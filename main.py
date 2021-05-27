@@ -28,7 +28,32 @@ def porArtista(ses):
 
 
 def porGenero(ses):
-    canciones = ses.run("MATCH (A:Genero) return A")
+    #Se ingresa el genero por el que se desea buscar
+    genero = input("\ningrese el genero que desea escuchar -> ")
+    
+    #Se buscan las canciones que son generadas por el genero (valgame la redundancia)
+    canciones = ses.run("MATCH (c:Cancion)-[:Pertenece_a]->(a:Genero{nombre:'%s'}) return c"% genero.lower())
+    
+    #Se agregan a una lista
+    lista = [nodo["c"] for nodo in canciones]
+    lista2 = []
+
+    #Se busca el artista de cada una de las canciones
+    for n in lista:
+        temp = n["nombre"]
+        artista = ses.run("MATCH (a:Artista)-[:Canta]->(c:Cancion{nombre:'%s'}) return a"% temp)
+        t = [nodo["a"] for nodo in artista]
+        for n in t:
+            lista2.append(n["nombre"])
+    
+    #Se imprime la lista de canciones con el artista
+    if len(lista) == 0:
+        print("\nEl genero que ha ingresado no existe.")
+    else:
+        print("\nLas canciones que te recomendamos de "+genero+" son:")
+        for i in range(0,len(lista)):
+            print("\t-> "+lista[i]["nombre"]+" de "+lista2[i])
+            
     return canciones
 
 
