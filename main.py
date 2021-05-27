@@ -58,7 +58,30 @@ def porGenero(ses):
 
 
 def porAnimo(ses):
-    canciones = ses.run("MATCH (A:Animo) return A")
+    #Se ingresa el animo por el que quiere escuchar las canciones
+    animo = input("\ningrese el estado de animo que desea escuchar -> ")
+    
+    #Se busca las canciones que generan ese estado de animo
+    canciones = ses.run("MATCH (c:Cancion)-[:Genera]->(a:Animo{nombre:'%s'}) return c,a"% animo.lower())
+    
+    lista = [nodo["c"] for nodo in canciones]
+    lista2 = []
+    
+    #Se busca el artista de las canciones
+    for n in lista:
+        temp = n["nombre"]
+        artista = ses.run("MATCH (a:Artista)-[:Canta]->(c:Cancion{nombre:'%s'}) return a"% temp)
+        t = [nodo["a"] for nodo in artista]
+        for n in t:
+            lista2.append(n["nombre"])
+    
+    #Se muestran en pántalla las canciones y los artistas
+    if len(lista) == 0:
+        print("\nEl estado de animo que ha ingresado no existe.")
+    else:
+        print("\nLas canciones que te recomendamos de "+animo+" son:")
+        for i in range(0,len(lista)):
+            print("\t-> "+lista[i]["nombre"]+" de "+lista2[i])
     return canciones
 
 
