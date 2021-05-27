@@ -85,8 +85,71 @@ def porAnimo(ses):
     return canciones
 
 
+def buscar(ingresado,opcion,ses):
+
+    existe = True
+    if opcion == "nombre":
+        actual = ses.run("MATCH (a:Artista{nombre:'%s'}) RETURN a"%ingresado)
+        lista = [nodo["a"] for nodo in actual]
+        if(len(lista)==0):
+            existe = False
+
+    elif opcion == "cancion":
+        actual = ses.run("MATCH (c:Cancion{nombre:'%s'}) RETURN c"%ingresado)
+        lista = [nodo["c"] for nodo in actual]
+        if(len(lista)==0):
+            existe = False
+
+    elif opcion == "animo":
+        actual = ses.run("MATCH (c:Animo{nombre:'%s'}) RETURN c"%ingresado)
+        lista = [nodo["c"] for nodo in actual]
+        if(len(lista)==0):
+            existe = False
+
+    elif opcion == "genero":
+        actual = ses.run("MATCH (c:Genero{nombre:'%s'}) RETURN c"%ingresado)
+        lista = [nodo["c"] for nodo in actual]
+        if(len(lista)==0):
+            existe = False
+
+    return existe
+
 def agregar(ses):
-    cancion = ""
+
+    nombre = input("\nIngrese el nombre del artista que creo la cancion -> ")
+    cancion = input("Ingrese el nombre de la cancion -> ")
+    genero = input("Ingrese el genero de la cancion -> ")
+    animo = input("Describa en una palabra como se siente al escuchar la cancion -> ")
+    # se define quien canta la cancion.
+
+    artista_existe = buscar(nombre.lower(),"nombre",ses)
+    genero_existe = buscar(genero.lower(),"genero",ses)
+    cancion_existe = buscar(cancion.lower(),"cancion",ses)
+    animo_existe = buscar(animo.lower(),"animo",ses)
+
+    nombre = nombre.lower()
+    cancion = cancion.lower()
+    genero = genero.lower()
+    animo = animo.lower()
+
+    if cancion_existe == True:
+        print("\n La cancion que ha ingresado ya existe ! ")
+    else:
+        if artista_existe == True and genero_existe == True and animo_existe == True:
+
+            comando_canciones = "CREATE (c:Cancion {nombre: '%s'}) RETURN c" %cancion
+            comando(ses, comando_canciones)
+
+            comando_canta = "MATCH (a:Artista {nombre:'%s'}),(b:Cancion{nombre:'%s'}) MERGE (a)-[r:Canta]->(b)" % (nombre,cancion)
+            comando(ses, comando_canta)
+
+            # se define el genero de la cancion.
+            comando_g = "MATCH (a:Cancion {nombre:'%s'}),(b:Genero{nombre:'%s'}) MERGE (a)-[r:Pertenece_a]->(b)" % (cancion,genero)
+            comando(ses, comando_g)
+
+            comando_an = "MATCH (a:Cancion {nombre:'%s'}),(b:Animo{nombre:'%s'}) MERGE (a)-[r:Genera]->(b)" % (cancion,animo)
+            comando(ses, comando_an)
+
     return cancion
 
 
@@ -131,3 +194,8 @@ while (True):
 
     except:
         print("\nIngrese valores numericos!")
+
+        
+def comando(ses, cm):
+    # recibe la sesion y el comando a ejecutar
+    return ses.run(cm)
