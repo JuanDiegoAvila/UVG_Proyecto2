@@ -16,7 +16,7 @@ def porArtista(ses):
     #Se agregan a una lista
     lista = [nodo["c"] for nodo in canciones]
     
-    #Se van imprimiento las canciones encontradas que hicieron mach
+    #Se van imprimiento las canciones encontradas que hicieron mach con el artista ingresado
     if len(lista) == 0:
         print("\nEl artista que ha ingresado no existe.")
     else:
