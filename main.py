@@ -173,9 +173,23 @@ def agregar(ses):
     return cancion
 
 
-def eliminar(ses):
-    cancion = ""
-    return cancion
+def eliminar(ses, nomcan):
+    exist = True
+    exist = buscar(nomcan.lower(),"cancion",ses)
+    if exist == True:
+        b1 = "MATCH (n:Artista)-[r:Canta]->(c:Cancion{nombre:'%s'}) DELETE r" %nomcan
+        b2 = "MATCH (n:Cancion{nombre:'%s'})-[r:Pertenece_a]->() DELETE r" %nomcan
+        b3 = "MATCH (n:Cancion{nombre:'%s'})-[r:Genera]->() DELETE r" %nomcan
+        b4 = "MATCH (n:Cancion{nombre:'%s'}) DELETE n" %nomcan
+
+        comando(ses, b1)
+        comando(ses, b2)
+        comando(ses, b3)
+        comando(ses, b4)
+    else:
+        print("Esa canción no existe en la base de datos")
+
+    return exist
 
 
 baseDeDatos = CBD.crear()  # crea la base de datos al iniciar el programa.
@@ -206,7 +220,10 @@ while (True):
         elif opcion == 4:
             agregar(sesion)
         elif opcion == 5:
-            eliminar(sesion)
+            print("Ingrese el nombre de la cancion que desea eliminar.")
+            cancan = input()
+            res = eliminar(sesion, cancan)
+            print(res)
         elif opcion == 6:
             print("\n Gracias por utilizar el sistema de recomendaciones SpotyZeer ! ")
             break
