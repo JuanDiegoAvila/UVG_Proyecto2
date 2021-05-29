@@ -181,11 +181,32 @@ def eliminar(ses, nomcan):
         b2 = "MATCH (n:Cancion{nombre:'%s'})-[r:Pertenece_a]->() DELETE r" %nomcan
         b3 = "MATCH (n:Cancion{nombre:'%s'})-[r:Genera]->() DELETE r" %nomcan
         b4 = "MATCH (n:Cancion{nombre:'%s'}) DELETE n" %nomcan
-
+        #Eliminar todo lo que tenga que ver con el nodo de esa cancion
         comando(ses, b1)
         comando(ses, b2)
         comando(ses, b3)
         comando(ses, b4)
+
+        listado = []
+        listy = []
+        s = ";"
+
+        with open("DatosIniciales.csv", "r") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                listado.append(row.split(";"))
+
+            for lista in listado:
+                if lista[3] == nomcan:
+                    listado.remove(lista)
+                else:
+                    listy.append(s.join(lista))
+
+        f.close()
+        with open("DatosInciales.csv", "w") as file:
+            writer = csv.writer(file)
+            writer.writerows(listy)
+        file.close()
     else:
         print("Esa canción no existe en la base de datos")
 

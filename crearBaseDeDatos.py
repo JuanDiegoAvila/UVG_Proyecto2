@@ -77,8 +77,3 @@ def crear():
 def comando(ses, cm):
     # recibe la sesion y el comando a ejecutar
     return ses.run(cm)
-
-def borrar_en_csv(archivo, nomcan):
-    base = pd.read_csv(archivo, ";")
-    canciones = base.set_index("Canciones")
-    return base
