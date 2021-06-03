@@ -194,6 +194,7 @@ def eliminar(ses, nomcan):
         with open("DatosIniciales.csv", "r") as f:
             reader = csv.reader(f)
             for row in reader:
+                print(row);
                 listado.append(row.split(";"))
 
             for lista in listado:
