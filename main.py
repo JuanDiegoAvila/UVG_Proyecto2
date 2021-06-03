@@ -194,19 +194,24 @@ def eliminar(ses, nomcan):
         with open("DatosIniciales.csv", "r") as f:
             reader = csv.reader(f)
             for row in reader:
-                print(row);
-                listado.append(row.split(";"))
+                listin = row[0].split(";")
+                listado.append(listin)
+  
 
-            for lista in listado:
-                if lista[3] == nomcan:
-                    listado.remove(lista)
-                else:
-                    listy.append(s.join(lista))
-
+        for lista in listado:
+            print(lista)
+            if lista[3] == nomcan:
+                listado.remove(lista)
+                print("se elimino")
+            else:
+                strong = s.join(lista)
+                listy.append(strong)
         f.close()
-        with open("DatosInciales.csv", "w") as file:
+
+        with open("DatosInciales.csv", "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerows(listy)
+            for lista in listy:
+                writer.writerow([lista])
         file.close()
     else:
         print("Esa canción no existe en la base de datos")
